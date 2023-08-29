@@ -1,0 +1,26 @@
+[
+    {
+        "model": "levelupapi.game",
+        "pk": 1,
+        "fields": {
+            "title": "Dragon Quest 3",
+            "maker": "Square Enix",
+            "game_type": 2,
+            "num_of_players": 1,
+            "skill_level": 1,
+            "gamer": 1
+        }
+    },
+    {
+        "model": "levelupapi.game",
+        "pk": 2,
+        "fields": {
+            "title": "Final Fantasy XIV",
+            "maker": "Square Enix",
+            "game_type": 3,
+            "num_of_players": 8,
+            "skill_level": 3,
+            "gamer": 1
+        }
+    }
+]

@@ -15,8 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls import include
 from django.urls import path
+from rest_framework import routers
+from levelupapi.views import register_user, login_user, GameTypeView, GameView, EventView
+
+
+router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'gametypes', GameTypeView, 'gametype')
+router.register(r'games', GameView, 'game' )
+router.register(r'events', EventView, 'events')
 
 urlpatterns = [
+    path('register', register_user),
+    path('login', login_user),
     path('admin/', admin.site.urls),
+    path('', include(router.urls)),
 ]
