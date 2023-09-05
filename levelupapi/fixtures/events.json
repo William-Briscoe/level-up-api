@@ -5,7 +5,6 @@
         "fields":{
             "date": "2020-08-28",
             "game": 2,
-            "game_type": 3,
             "attendees": [1],
             "organizer": 1
         }
@@ -16,7 +15,6 @@
         "fields":{
             "date": "2020-08-28",
             "game": 1,
-            "game_type": 2,
             "attendees": [1],
             "organizer": 1
         }

@@ -45,15 +45,34 @@ class EventView(ViewSet):
         """
         gamer = Gamer.objects.get(user=request.auth.user)
         game = Game.objects.get(pk=request.data["game"])
-        game_type = GameType.objects.get(pk=request.data["game_type"])
+        
         event = Event.objects.create(
             date=request.data["date"],
             game=game,
-            game_type= game_type,
             organizer= gamer
         )
         serializer = EventSerializer(event)
         return Response(serializer.data)
+    
+
+    def update(self, request, pk):
+        """Handle PUT requests for an event
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+
+        event = Event.objects.get(pk=pk)
+        event.date = request.data["date"]
+        
+        #event.attendees = request.data["attendees"]
+        organizer = Gamer.objects.get(pk=request.data["organizer"])
+        event.organizer = organizer
+        game = Game.objects.get(pk=request.data["game"])
+        event.game = game
+        event.save()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 
 class GamerSeralizer(serializers.ModelSerializer):
@@ -61,15 +80,21 @@ class GamerSeralizer(serializers.ModelSerializer):
         model= Gamer
         fields = ('id', 'user', 'bio', 'full_name')
 
-class GameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model= Game
-        fields = ('title', 'maker', 'num_of_players', 'skill_level', 'gamer', 'game_type')
 
 class GameTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model= GameType
         fields = ('id', 'label', 'description')
+
+
+class GameSerializer(serializers.ModelSerializer):
+    game_type = GameTypeSerializer(many=False)
+
+    class Meta:
+        model= Game
+        fields = ('title', 'maker', 'num_of_players', 'skill_level', 'gamer', 'game_type')
+
+
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -79,7 +104,6 @@ class EventSerializer(serializers.ModelSerializer):
     organizer = GamerSeralizer(many=False)
     attendees = GamerSeralizer(many=True)
     game = GameSerializer(many=False)
-    game_type = GameTypeSerializer(many=False)
     class Meta:
         model = Event
-        fields = ('id', 'date', 'game', 'game_type', 'attendees', 'organizer')
+        fields = ('id', 'date', 'game', 'attendees', 'organizer')
